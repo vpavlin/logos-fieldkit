@@ -20,9 +20,11 @@ def build():
     info=jget("/cryptarchia/info"); net=jget("/network/info")
     height=None
     if isinstance(info,dict):
-        try: height=int(info.get("height"))
+        try: height=int((info.get("cryptarchia_info") or info).get("height"))
         except Exception: height=None
     mode=info.get("mode") if isinstance(info,dict) else None
+    while isinstance(mode,dict): mode=next(iter(mode.values()),None)
+    mode=mode if isinstance(mode,str) else None
     net=net if isinstance(net,dict) else {}
     act=active(); pid=net.get("peer_id") or ""
     d={"updated":int(time.time()),"height":height,

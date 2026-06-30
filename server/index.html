@@ -81,10 +81,11 @@
   <p class="lead">Logos Basecamp — private messaging and modular apps. Desktop AppImage.</p>
   <div class="card">
     <h3>Logos Basecamp</h3>
-    <p class="by">Linux · AppImage · v0.2.0-RC3</p>
+    <p class="by">Linux (x86_64 · arm64) + macOS · v0.2.0</p>
     <div class="files">
-      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-RC3-linux-x86_64.AppImage" download>Linux x86_64 · AppImage <span class="sz">262 MB</span></a>
-      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-RC3-macos-arm64.dmg" download>macOS arm64 · dmg <span class="sz">94 MB</span></a>
+      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-linux-x86_64.AppImage" download>Linux x86_64 <span class="sz">262 MB</span></a>
+      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-linux-aarch64.AppImage" download>Linux arm64 <span class="sz">256 MB</span></a>
+      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-macos-arm64.dmg" download>macOS arm64 <span class="sz">94 MB</span></a>
     </div>
     <p class="note">Then add the on-node module repository in <b>Basecamp → Settings → Package Repositories</b> to install the Mesh Gateway + UI + QR modules:</p>
     <div class="urlbox"><code id="repo-url" class="mono">…</code><button class="copy" onclick="cp('repo-url',this)">Copy</button></div>
@@ -93,16 +94,32 @@
 </section>
 
 <section>
+  <div class="sec-h"><h2>Headless (logoscore)</h2><span class="ln"></span></div>
+  <p class="lead">Run a node or gateway without the GUI — the Logos Core CLI.</p>
+  <div class="card">
+    <h3>logoscore + package tools</h3>
+    <p class="by">v0.2.0 · extract, drop on your PATH</p>
+    <div class="files">
+      <a class="btn" href="/logoscore/logoscore-x86_64-linux.tar.gz" download>Linux x86_64 <span class="sz">78 MB</span></a>
+      <a class="btn" href="/logoscore/logoscore-aarch64-linux.tar.gz" download>Linux arm64 <span class="sz">78 MB</span></a>
+      <a class="btn" href="/logoscore/logoscore-aarch64-macos.tar.gz" download>macOS <span class="sz">112 MB</span></a>
+    </div>
+    <p class="note">Headless module install uses <span class="mono">lgpm</span> + <span class="mono">lgpd</span> — in <a class="ext" href="/tools/">/tools/</a>.</p>
+  </div>
+</section>
+
+<section>
   <div class="sec-h"><h2>Logos Node</h2><span class="ln"></span></div>
   <p class="lead">Run a Logos blockchain (Cryptarchia) node.</p>
   <div class="card">
     <h3>Node binary + proving circuits</h3>
-    <p class="by">linux · aarch64 (Raspberry Pi / ARM64)</p>
+    <p class="by">v0.2.0 · Linux (x86_64 · arm64) + macOS</p>
     <div class="files">
-      <a class="btn" href="/node/logos-blockchain-node" download>logos-blockchain-node <span class="sz">39 MB</span></a>
-      <a class="btn" href="/node/logos-blockchain-circuits-v0.4.2-linux-aarch64.tar.gz" download>circuits v0.4.2 <span class="sz">31 MB</span></a>
+      <a class="btn" href="/node/logos-blockchain-node-linux-x86_64-0.2.0.tar.gz" download>Linux x86_64 <span class="sz">43 MB</span></a>
+      <a class="btn" href="/node/logos-blockchain-node-linux-aarch64-0.2.0.tar.gz" download>Linux arm64 <span class="sz">42 MB</span></a>
+      <a class="btn" href="/node/logos-blockchain-node-macos-aarch64-0.2.0.tar.gz" download>macOS arm64 <span class="sz">41 MB</span></a>
     </div>
-    <p class="note">The node config (<span class="mono">user_config.yaml</span>) is generated per-node — see the release page for the generator and other architectures. <a class="ext" href="https://github.com/logos-co" target="_blank" rel="noopener">github.com/logos-co ↗</a></p>
+    <p class="note">Config is generated per-node via <span class="mono">generate_user_config</span> with the devnet bootstrap peers — see the quick-start. <a class="ext" href="https://github.com/logos-blockchain/logos-blockchain/releases/tag/0.2.0" target="_blank" rel="noopener">release 0.2.0 ↗</a></p>
   </div>
 </section>
 
