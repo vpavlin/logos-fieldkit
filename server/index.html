@@ -62,7 +62,7 @@
 
 <header>
   <div class="brand"><span class="mark"></span><h1>LOGOS</h1></div>
-  <p class="tag">DWeb Camp field node — sovereign tools, a blockchain node, and a reading library, all served from a Raspberry Pi over its own WiFi and LoRa mesh. <b style="color:var(--ink)">No internet required.</b></p>
+  <p class="tag">DWeb Camp field node — sovereign tools, a blockchain node, a local AI, and a reading library, served from a Raspberry Pi over its own WiFi. <b style="color:var(--ink)">Grab it all at LAN speed when camp internet is slow.</b></p>
   <p class="meta">Connected to <b id="host">this node</b> · everything below downloads locally.</p>
 </header>
 
@@ -158,6 +158,46 @@
     <p class="note"><a class="ext" href="https://archive.org/details/farewell-to-westphalia-jarrad-hope-and-peter-ludlow-foss-edition" target="_blank" rel="noopener">Source on archive.org ↗</a></p>
   </div>
 </section>
+
+<section>
+  <div class="sec-h"><h2>Local AI</h2><span class="ln"></span></div>
+  <p class="lead">A small language model running <b style="color:var(--ink)">entirely on this Pi</b> — no cloud, genuinely offline. Ask it about Logos, Basecamp, or this field node.</p>
+  <div class="card">
+    <div id="llm-log" style="display:flex;flex-direction:column;gap:10px;min-height:48px;max-height:320px;overflow-y:auto;margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px">
+      <input id="llm-in" placeholder="Ask the field node…" autocomplete="off"
+        style="flex:1;background:#000;border:1px solid var(--line);border-radius:9px;padding:11px 13px;color:var(--ink);font-size:14px;font-family:inherit">
+      <button id="llm-send" class="copy" style="background:var(--accent2);color:#000;border-color:var(--accent2)">Send</button>
+    </div>
+    <p class="note">Runs locally · LFM2.5-230M (8-bit) via llama.cpp · no data leaves the Pi</p>
+  </div>
+</section>
+<script>
+(function(){
+  var log=document.getElementById('llm-log'),inp=document.getElementById('llm-in'),btn=document.getElementById('llm-send');
+  var api='http://'+location.hostname+':8081/v1/chat/completions';
+  var sys='You are the assistant for a Logos field node, a Raspberry Pi at DWeb Camp. Answer concisely from these facts; if unsure, say so.\n'
+   +'- Logos is a sovereign network stack: private peer-to-peer messaging plus a blockchain, designed to run anywhere.\n'
+   +'- Logos Basecamp is the desktop app (private messaging and modular apps). To use it: download Basecamp from this node, open Settings then Package Repositories, add this node repository, then install the Mesh Gateway, its UI, and QR modules.\n'
+   +'- The Mesh Gateway bridges a LoRa radio to Logos Messaging and auto-detects the firmware (Meshtastic or MeshCore) when you plug it in.\n'
+   +'- The Logos node is a Cryptarchia blockchain node (version 0.2.0, testnet).\n'
+   +'- This field node serves Basecamp, modules, node binaries, docs and a small library over its own WiFi (SSID LogosFieldNode) for fast local downloads when camp internet is slow.\n'
+   +'- You run fully locally on the Pi (model LFM2.5-230M); no data leaves the device. Keep answers short and friendly.';
+  var msgs=[{role:'system',content:sys}];
+  function bubble(role,text){var d=document.createElement('div');
+    d.style.cssText='padding:9px 12px;border-radius:10px;max-width:88%;font-size:14px;white-space:pre-wrap;'+(role==='user'?'align-self:flex-end;background:#17171a;border:1px solid #33333a':'align-self:flex-start;background:var(--panel);border:1px solid var(--line)');
+    d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight;return d;}
+  async function send(){var q=inp.value.trim();if(!q)return;inp.value='';btn.disabled=true;
+    bubble('user',q);msgs.push({role:'user',content:q});var out=bubble('assistant','…');
+    try{var r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:msgs,max_tokens:256,temperature:0.6})});
+      var j=await r.json();var a=(j.choices[0].message.content||'').trim();
+      out.textContent=a;msgs.push({role:'assistant',content:a});}
+    catch(e){out.textContent='⚠ Local AI is offline right now.';msgs.pop();}
+    btn.disabled=false;inp.focus();}
+  btn.onclick=send;inp.addEventListener('keydown',function(e){if(e.key==='Enter')send();});
+})();
+</script>
 
 <footer>
   <span class="dot">●</span> Served from a Raspberry&nbsp;Pi at DWeb&nbsp;Camp · WiFi&nbsp;+&nbsp;LoRa&nbsp;mesh · powered by Logos
