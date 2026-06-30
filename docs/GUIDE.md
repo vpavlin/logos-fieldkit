@@ -115,7 +115,11 @@ $ logoscore call <module> <method> ...  # invoke
 
 ## 5. Library
 
-Offline reading on the landing page (*Library*) — EPUB/PDF, downloadable.
+Offline reading, served on this node:
+- **Holotropic Breathwork** (Stanislav & Christina Grof) — [EPUB](/library/Holotropic-Breathwork-Grof.epub) · [PDF](/library/Holotropic-Breathwork-Grof.pdf)
+- **Farewell to Westphalia** (Jarrad Hope & Peter Ludlow) — [PDF](/library/Farewell-to-Westphalia.pdf)
+
+(Also on the landing page under *Library*.)
 
 ---
 
