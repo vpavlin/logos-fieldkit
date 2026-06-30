@@ -1,0 +1,18 @@
+# Runtime data written by the feeders (regenerated live, not source)
+dashboard/data.json
+dashboard/node-data.json
+dashboard/sys-data.json
+dashboard/map.png
+dashboard/wifi-qr.png
+dashboard/.nodename
+
+# Large served artifacts (fetched at deploy time, not committed)
+server/dweb-share/
+*.AppImage
+*.dmg
+*.tar.gz
+*.lgx
+
+# misc
+*.log
+.DS_Store

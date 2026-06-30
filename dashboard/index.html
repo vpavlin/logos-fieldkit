@@ -1,0 +1,162 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=320,height=480,initial-scale=1">
+<style>
+ :root{--ink:#f4f4f4;--muted:#bdbdbd;--accent:#ff5500;--line:#6f6f6f;--ok:#33cc55;--off:#777;--lora:#33bbdd;--bad:#ff4433}
+ *{box-sizing:border-box}
+ html,body{margin:0;width:320px;height:480px;background:#000;color:var(--ink);
+   font-family:"DejaVu Sans Mono","Noto Sans Mono",monospace;-webkit-user-select:none;user-select:none}
+ body{display:flex;flex-direction:column;overflow:hidden}
+ .bar{flex:0 0 auto;height:40px;border-bottom:3px solid var(--accent);display:flex;align-items:center;
+   padding:0 12px;font-weight:700;font-size:17px;letter-spacing:1px;color:var(--accent)}
+ .bar .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);margin-right:8px}
+ #clock{margin-left:auto;font-size:15px;font-weight:700;color:#fff}
+ .tabs{flex:0 0 auto;display:flex;border-bottom:2px solid var(--line)}
+ .tab{flex:1;text-align:center;padding:8px 1px;font-size:12px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent}
+ .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+ .scroll{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch}
+ .hrow{display:flex;align-items:center;padding:5px 12px 1px;font-size:18px;font-weight:700;color:#fff}
+ .badge{margin-left:auto;font-size:13px;font-weight:700;padding:1px 8px;border:2px solid var(--off);border-radius:5px;color:var(--off)}
+ .badge.ok{color:var(--ok);border-color:var(--ok)} .badge.warn{color:var(--accent);border-color:var(--accent)} .badge.bad{color:var(--bad);border-color:var(--bad)}
+ .hstat{display:flex;gap:16px;padding:3px 12px 8px;font-size:13px;font-weight:700;color:var(--muted);border-bottom:2px solid var(--line)}
+ .hstat .d{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;background:var(--off)}
+ .hstat .d.on{background:var(--ok)}
+ .stat3{display:flex;gap:8px;padding:10px}
+ .chip{flex:1;border:2px solid var(--line);border-radius:7px;padding:8px 2px;text-align:center}
+ .chip .k{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+ .chip .v{font-size:22px;font-weight:700;line-height:1.1;color:#fff}
+ .hd{padding:5px 12px 2px;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:1.5px}
+ .row{display:flex;align-items:center;padding:4px 12px;border-bottom:1px solid var(--line);font-size:15px}
+ .row.rel{border-left:4px solid var(--accent);padding-left:8px}
+ .row .cn{font-weight:700;color:#fff} .row.dim .cn{color:var(--muted);font-weight:400}
+ .row .cc{margin-left:auto;font-weight:700;color:var(--accent)} .row.dim .cc{color:var(--muted)}
+ .me{font-size:11px;color:var(--accent);font-weight:700;margin-left:6px}
+ .kv{display:flex;align-items:center;padding:5px 12px;border-bottom:1px solid var(--line);font-size:16px}
+ .kk{color:var(--muted);font-weight:700;width:46px} .vv{color:#fff;font-weight:700}
+ .mono{font-size:13px;color:var(--muted);padding:6px 12px;word-break:break-all}
+ .barwrap{height:15px;background:#1a1a1a;border:1px solid var(--line);border-radius:4px;margin:3px 12px 9px;overflow:hidden}
+ .barf{height:100%;width:0;background:var(--ok);transition:width .4s}
+ .msg{border-bottom:1px solid var(--line);border-left:4px solid var(--accent);padding:5px 6px 5px 10px}
+ .msg .ml{float:right;font-size:11px;font-weight:700;padding:0 5px;border:1px solid var(--lora);border-radius:4px;color:var(--lora);margin-left:6px}
+ .ml.via-lm{color:var(--accent);border-color:var(--accent)} .ml.via-tx{color:var(--ok);border-color:var(--ok)}
+ .msg .mc{font-size:12px;font-weight:700;color:var(--accent)} .msg .mn{font-size:15px;font-weight:700;color:#fff}
+ .msg .mb{font-size:15px;color:#e2e2e2;margin-top:2px;word-break:break-word}
+ #gmapwrap{position:relative;width:256px;height:256px;margin:6px auto}
+ #gmap{display:block;width:256px;height:256px;border:1px solid var(--line);background:#111}
+ #gdot{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 0 5px #000}
+ .qrwrap{text-align:center;padding:14px 0 6px}
+ #wifiqr{width:224px;height:224px;background:#fff;border-radius:10px;padding:8px;image-rendering:pixelated}
+ .qrcap{margin-top:8px;font-size:13px;color:var(--muted);font-weight:700;letter-spacing:1px}
+</style></head><body>
+<div class="bar"><span class="dot"></span>LOGOS PI<span id="clock"></span></div>
+<div class="tabs">
+ <div class="tab" data-t="mesh">MESH</div><div class="tab" data-t="node">NODE</div>
+ <div class="tab" data-t="sys">SYS</div><div class="tab" data-t="gps">GPS</div><div class="tab" data-t="wifi">WIFI</div>
+</div>
+<div class="scroll">
+ <div id="meshView">
+  <div class="hrow"><span id="node">—</span><span class="badge" id="state">…</span></div>
+  <div class="hstat">
+    <span><span class="d" id="radio"></span>RADIO</span><span><span class="d" id="logos"></span>LOGOS</span>
+    <span><span class="d on"></span><span id="nodecount">0</span> NODES</span>
+  </div>
+  <div class="hd">CHANNELS</div><div id="channels"></div>
+  <div class="hd">NODES</div><div id="nodes"></div>
+  <div class="hd">RECENT</div><div id="log"></div>
+ </div>
+ <div id="nodeView" style="display:none">
+  <div class="hrow"><span>Logos Node</span><span class="badge" id="nstate">…</span></div>
+  <div class="hstat"><span>WATCHDOG RESTARTS: <span id="nrestarts">0</span></span></div>
+  <div class="stat3">
+    <div class="chip"><div class="k">Height</div><div class="v" id="nheight">—</div></div>
+    <div class="chip"><div class="k">Peers</div><div class="v" id="npeers">—</div></div>
+    <div class="chip"><div class="k">Conn</div><div class="v" id="nconn">—</div></div>
+  </div>
+  <div class="hd">PEER ID</div><div class="mono" id="npeerid">—</div>
+  <div class="hd">CONSENSUS</div><div class="mono" id="nnote">—</div>
+ </div>
+ <div id="sysView" style="display:none">
+  <div class="hrow"><span>System</span><span class="badge ok" id="suptime">—</span></div>
+  <div class="stat3">
+    <div class="chip"><div class="k">CPU</div><div class="v" id="scpu">—</div></div>
+    <div class="chip"><div class="k">Mem</div><div class="v" id="smem">—</div></div>
+    <div class="chip"><div class="k">Temp</div><div class="v" id="stemp">—</div></div>
+  </div>
+  <div class="hd">CPU LOAD</div><div class="barwrap"><div class="barf" id="scpubar"></div></div>
+  <div class="hd">MEMORY</div><div class="barwrap"><div class="barf" id="smembar"></div></div>
+  <div class="hd">DISK <span id="sdisk" style="color:var(--muted)"></span></div><div class="barwrap"><div class="barf" id="sdiskbar"></div></div>
+ </div>
+ <div id="gpsView" style="display:none">
+  <div class="hrow"><span>GPS</span><span class="badge" id="gfix">…</span></div>
+  <div class="kv"><span class="kk">LAT</span><span class="vv" id="glat">—</span></div>
+  <div class="kv"><span class="kk">LON</span><span class="vv" id="glon">—</span></div>
+  <div class="stat3">
+    <div class="chip"><div class="k">Alt m</div><div class="v" id="galt">—</div></div>
+    <div class="chip"><div class="k">HDOP</div><div class="v" id="gsat">—</div></div>
+    <div class="chip"><div class="k">km/h</div><div class="v" id="gspd">—</div></div>
+  </div>
+  <div class="hd">LOCATION</div>
+  <div id="gmapwrap" style="display:none"><img id="gmap" alt=""><div id="gdot"></div></div>
+  <div id="gmapmsg" class="mono">acquiring GPS fix…</div>
+ </div>
+ <div id="wifiView" style="display:none">
+  <div class="hrow"><span>Join the Field Node</span><span class="badge ok">WiFi</span></div>
+  <div class="qrwrap"><img id="wifiqr" src="wifi-qr.png" alt="WiFi QR"><div class="qrcap">SCAN TO JOIN</div></div>
+  <div class="kv"><span class="kk">SSID</span><span class="vv">LogosFieldNode</span></div>
+  <div class="kv"><span class="kk">Pass</span><span class="vv">logosdweb</span></div>
+  <div class="kv"><span class="kk">Open</span><span class="vv">http://10.42.0.1</span></div>
+  <div class="mono">After joining, the Logos page opens automatically — or browse to the address above.</div>
+ </div>
+</div>
+<script>
+ const p=n=>String(n).padStart(2,"0"), $=id=>document.getElementById(id);
+ const esc=s=>String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+ const OB={mesh:["LoRa",""],lm:["LM","via-lm"],local:["TX","via-tx"]};
+ const col=p=>p>=90?"var(--bad)":p>=70?"var(--accent)":"var(--ok)";
+ const gb=b=>(b/1e9).toFixed(0)+"G";
+ const fmtup=s=>{if(s==null)return"—";const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return d?d+"d "+h+"h":h+"h "+m+"m";};
+ const bar=(id,pct)=>{const e=$(id);if(e&&pct!=null){e.style.width=Math.min(100,pct)+"%";e.style.background=col(pct);}};
+ setInterval(()=>{const d=new Date();$("clock").textContent=p(d.getHours())+":"+p(d.getMinutes())+":"+p(d.getSeconds())},1000);
+ const dot=(id,on)=>{const e=$(id);if(e)e.className="d"+(on?" on":"")};
+ let TAB="mesh";
+ const VIEWS={mesh:"meshView",node:"nodeView",sys:"sysView",gps:"gpsView",wifi:"wifiView"};
+ function setTab(t){TAB=t;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.t===t));
+   for(const k in VIEWS)$(VIEWS[k]).style.display=(k===t?"":"none");}
+ document.querySelectorAll(".tab").forEach(x=>x.onclick=()=>setTab(x.dataset.t));
+ async function pollMesh(){try{
+   const r=await fetch("data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json(); const h=d.health||{};
+   $("node").textContent=h.node||"—";
+   const st=$("state"); st.textContent=h.state||"?"; st.className="badge"+(h.state==="ONLINE"?" ok":"");
+   dot("radio",h.radio==="up"); dot("logos",h.logos==="up"); $("nodecount").textContent=h.nodes!=null?h.nodes:0;
+   $("channels").innerHTML=(d.channels||[]).map(c=>'<div class="row'+(c.relaying?" rel":"")+(c.msgs?"":" dim")+'"><span class="cn">'+esc(c.name)+'</span><span class="cc">'+c.msgs+'</span></div>').join("");
+   $("nodes").innerHTML=(d.nodes||[]).map(n=>'<div class="row"><span class="cn">'+esc(n.name)+'</span>'+(n.self?'<span class="me">THIS</span>':'')+'</div>').join("")||'<div class="row dim"><span class="cn">none</span></div>';
+   $("log").innerHTML=(d.messages||[]).map(m=>{const ob=OB[m.origin]||[(m.origin||""),""];return '<div class="msg"><span class="ml '+ob[1]+'">'+esc(ob[0])+'</span><span class="mc">'+esc(m.chan)+'</span> <span class="mn">'+esc(m.name)+'</span><div class="mb">'+esc(m.body)+'</div></div>';}).join("")||'<div class="msg"><div class="mb">no messages yet</div></div>';
+ }catch(e){}}
+ async function pollNode(){try{
+   const r=await fetch("node-data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json();
+   const st=$("nstate"); st.textContent=d.state||"?"; st.className="badge "+({SYNCED:"ok",SYNCING:"warn",WEDGED:"bad",DOWN:""}[d.state]||"");
+   $("nheight").textContent=d.height!=null?d.height:"—"; $("npeers").textContent=d.peers!=null?d.peers:"—";
+   $("nconn").textContent=d.connections!=null?d.connections:"—"; $("nrestarts").textContent=d.restarts!=null?d.restarts:0;
+   $("npeerid").textContent=d.peerId||"—";
+   $("nnote").textContent=d.height!=null?("synced at height "+d.height):(d.peers!=null?"networking up ("+d.peers+" peers) — consensus catching up / wedged":"node API unreachable");
+ }catch(e){}}
+ async function pollSys(){try{
+   const r=await fetch("sys-data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json();
+   $("scpu").textContent=d.cpu!=null?d.cpu+"%":"—"; bar("scpubar",d.cpu);
+   if(d.mem){$("smem").textContent=d.mem.pct+"%"; bar("smembar",d.mem.pct);}
+   $("stemp").textContent=d.temp!=null?d.temp+"°":"—";
+   if(d.disk){$("sdisk").textContent="("+gb(d.disk.used)+"/"+gb(d.disk.total)+" · "+gb(d.disk.free)+" free)"; bar("sdiskbar",d.disk.pct);}
+   $("suptime").textContent="up "+fmtup(d.uptime);
+   const g=d.gps||{}; const gf=$("gfix"); const fm={2:"2D FIX",3:"3D FIX"}[g.mode]||"NO FIX";
+   gf.textContent=fm; gf.className="badge "+((g.mode||0)>=2?"ok":"bad");
+   $("glat").textContent=g.lat!=null?g.lat.toFixed(6):"—"; $("glon").textContent=g.lon!=null?g.lon.toFixed(6):"—";
+   $("galt").textContent=g.alt!=null?Math.round(g.alt):"—"; $("gsat").textContent=g.hdop!=null?g.hdop.toFixed(1):"—";
+   $("gspd").textContent=g.speed!=null?(g.speed*3.6).toFixed(1):"—";
+   if(d.hasmap){$("gmapwrap").style.display=""; $("gmapmsg").style.display="none";
+     const v=(d.map&&d.map.fetched)?d.updated:"c"; const u="map.png?v="+v; if($("gmap").getAttribute("src")!==u)$("gmap").src=u;
+     if(d.map){$("gdot").style.left=d.map.dotx+"px"; $("gdot").style.top=d.map.doty+"px"; $("gdot").style.display="";}
+   }else{$("gmapwrap").style.display="none"; $("gmapmsg").style.display="";}
+ }catch(e){}}
+ function pollAll(){pollMesh();pollNode();pollSys();}
+ pollAll(); setInterval(pollAll,5000);
+ setTab("mesh");
+</script></body></html>

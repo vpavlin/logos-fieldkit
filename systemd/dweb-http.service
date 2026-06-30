@@ -1,0 +1,10 @@
+[Unit]
+Description=DWeb Camp HTTP share
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -m http.server 80 --directory /srv/dweb-share
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

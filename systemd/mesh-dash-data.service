@@ -1,0 +1,11 @@
+[Unit]
+Description=Mesh dashboard data feeder (gateway DB/journal -> data.json)
+After=meshtastic-gateway.service
+
+[Service]
+ExecStart=/usr/bin/python3 /home/vpavlin/mesh-dashboard/feed.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

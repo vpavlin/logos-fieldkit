@@ -1,0 +1,9 @@
+[Unit]
+Description=Node dashboard data feeder (cryptarchia/network -> node-data.json)
+After=logos-node.service
+[Service]
+ExecStart=/usr/bin/python3 /home/vpavlin/mesh-dashboard/node-feed.py
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=default.target

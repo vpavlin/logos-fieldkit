@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logos · DWeb Camp Field Node</title>
+<style>
+ :root{
+   --bg:#0a0a0b; --panel:#101012; --ink:#f2f2f3; --muted:#8a8a90; --line:#222226;
+   --accent:#e7e7ea; --accent2:#9a8cff; --ok:#46c46a;
+ }
+ *{box-sizing:border-box}
+ html,body{margin:0;background:var(--bg);color:var(--ink);
+   font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+   -webkit-font-smoothing:antialiased;line-height:1.5}
+ .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+ .wrap{max-width:760px;margin:0 auto;padding:0 20px 64px}
+ header{padding:48px 0 28px;border-bottom:1px solid var(--line);margin-bottom:8px}
+ .brand{display:flex;align-items:center;gap:14px}
+ .mark{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);
+   display:grid;place-items:center;flex:0 0 auto}
+ .mark::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--accent2)}
+ .brand h1{font-size:26px;letter-spacing:6px;font-weight:700;margin:0}
+ .tag{color:var(--muted);margin:14px 0 0;font-size:15px;max-width:62ch}
+ .meta{margin-top:14px;font-size:13px;color:var(--muted)}
+ .meta b{color:var(--ink);font-weight:600}
+ section{padding:30px 0 8px;border-bottom:1px solid var(--line)}
+ .sec-h{display:flex;align-items:baseline;gap:12px;margin:0 0 4px}
+ .sec-h h2{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0}
+ .sec-h .ln{flex:1;height:1px;background:var(--line)}
+ .lead{color:var(--muted);margin:6px 0 18px;font-size:15px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+ .card h3{margin:0 0 4px;font-size:18px;font-weight:650}
+ .card .by{color:var(--muted);font-size:14px;margin:0 0 12px}
+ .files{display:flex;flex-wrap:wrap;gap:10px}
+ a.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;
+   border:1px solid #33333a;color:var(--ink);background:#17171a;
+   padding:9px 14px;border-radius:9px;font-size:14px;font-weight:600;transition:.15s}
+ a.btn:hover,a.btn:active{background:var(--accent);color:#000;border-color:var(--accent)}
+ a.btn .sz{color:var(--muted);font-weight:500;font-size:12px}
+ a.btn:hover .sz{color:#333}
+ a.ext{color:var(--accent2);text-decoration:none;font-size:13px}
+ a.ext:hover{text-decoration:underline}
+ .steps{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:14px}
+ .steps li{margin:5px 0}
+ .urlbox{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+ .urlbox code{background:#000;border:1px solid var(--line);border-radius:8px;padding:9px 12px;
+   font-size:13px;color:var(--ink);flex:1;min-width:240px;overflow-x:auto;white-space:nowrap}
+ button.copy{border:1px solid #33333a;background:#17171a;color:var(--ink);border-radius:8px;
+   padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+ button.copy:active{background:var(--accent);color:#000}
+ .note{color:var(--muted);font-size:13px;margin-top:10px}
+ .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin:14px 0 4px}
+ .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+ .stat .sk{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+ .stat .sv{font-size:16px;font-weight:700;color:var(--ink);line-height:1.25}
+ .stat .sv .sub{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:4px}
+ .stat .sv .on{color:var(--ok)}
+ footer{padding:30px 0 0;color:var(--muted);font-size:13px;text-align:center}
+ footer .dot{color:var(--ok)}
+</style></head>
+<body><div class="wrap">
+
+<header>
+  <div class="brand"><span class="mark"></span><h1>LOGOS</h1></div>
+  <p class="tag">DWeb Camp field node — sovereign tools, a blockchain node, and a reading library, all served from a Raspberry Pi over its own WiFi and LoRa mesh. <b style="color:var(--ink)">No internet required.</b></p>
+  <p class="meta">Connected to <b id="host">this node</b> · everything below downloads locally.</p>
+</header>
+
+<section>
+  <div class="sec-h"><h2>Field Node Status</h2><span class="ln"></span></div>
+  <div class="statgrid">
+    <div class="stat"><span class="sk">Logos Node</span><span class="sv" id="st-node">…</span></div>
+    <div class="stat"><span class="sk">Mesh</span><span class="sv" id="st-mesh">…</span></div>
+    <div class="stat"><span class="sk">System</span><span class="sv" id="st-sys">…</span></div>
+    <div class="stat"><span class="sk">Location</span><span class="sv" id="st-gps">…</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Basecamp</h2><span class="ln"></span></div>
+  <p class="lead">Logos Basecamp — private messaging and modular apps. Desktop AppImage.</p>
+  <div class="card">
+    <h3>Logos Basecamp</h3>
+    <p class="by">Linux · AppImage · v0.2.0-RC3</p>
+    <div class="files">
+      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-RC3-linux-x86_64.AppImage" download>Linux x86_64 · AppImage <span class="sz">262 MB</span></a>
+      <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-RC3-macos-arm64.dmg" download>macOS arm64 · dmg <span class="sz">94 MB</span></a>
+    </div>
+    <p class="note">Then add the on-node module repository in <b>Basecamp → Settings → Package Repositories</b> to install the Mesh Gateway + UI + QR modules:</p>
+    <div class="urlbox"><code id="repo-url" class="mono">…</code><button class="copy" onclick="cp('repo-url',this)">Copy</button></div>
+    <p class="note">Modules install on <b>Linux x86_64</b> via the repo above. macOS gets the app only (mesh modules are Linux-only for now); raw arm64 <span class="mono">.lgx</span> live in <a class="ext" href="/basecamp/modules/">/basecamp/modules/</a>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Logos Node</h2><span class="ln"></span></div>
+  <p class="lead">Run a Logos blockchain (Cryptarchia) node.</p>
+  <div class="card">
+    <h3>Node binary + proving circuits</h3>
+    <p class="by">linux · aarch64 (Raspberry Pi / ARM64)</p>
+    <div class="files">
+      <a class="btn" href="/node/logos-blockchain-node" download>logos-blockchain-node <span class="sz">39 MB</span></a>
+      <a class="btn" href="/node/logos-blockchain-circuits-v0.4.2-linux-aarch64.tar.gz" download>circuits v0.4.2 <span class="sz">31 MB</span></a>
+    </div>
+    <p class="note">The node config (<span class="mono">user_config.yaml</span>) is generated per-node — see the release page for the generator and other architectures. <a class="ext" href="https://github.com/logos-co" target="_blank" rel="noopener">github.com/logos-co ↗</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-h"><h2>Library</h2><span class="ln"></span></div>
+  <p class="lead">Offline reading for the camp.</p>
+  <div class="card">
+    <h3>Holotropic Breathwork</h3>
+    <p class="by">A New Approach to Self-Exploration and Therapy · Stanislav &amp; Christina Grof</p>
+    <div class="files">
+      <a class="btn" href="/library/Holotropic-Breathwork-Grof.epub" download>EPUB <span class="sz">451 KB</span></a>
+      <a class="btn" href="/library/Holotropic-Breathwork-Grof.pdf" download>PDF <span class="sz">3.0 MB</span></a>
+    </div>
+    <p class="note"><a class="ext" href="https://archive.org/details/holotropicbreathworknewapproachtoselfexplorationtherapystanislavgrofchristinagrof_419_W" target="_blank" rel="noopener">Source on archive.org ↗</a></p>
+  </div>
+  <div class="card">
+    <h3>Farewell to Westphalia</h3>
+    <p class="by">Jarrad Hope &amp; Peter Ludlow · FOSS edition</p>
+    <div class="files">
+      <a class="btn" href="/library/Farewell-to-Westphalia.pdf" download>PDF <span class="sz">2.2 MB</span></a>
+    </div>
+    <p class="note"><a class="ext" href="https://archive.org/details/farewell-to-westphalia-jarrad-hope-and-peter-ludlow-foss-edition" target="_blank" rel="noopener">Source on archive.org ↗</a></p>
+  </div>
+</section>
+
+<footer>
+  <span class="dot">●</span> Served from a Raspberry&nbsp;Pi at DWeb&nbsp;Camp · WiFi&nbsp;+&nbsp;LoRa&nbsp;mesh · powered by Logos
+</footer>
+
+</div>
+<script>
+  document.getElementById('host').textContent = location.host;
+  document.getElementById('repo-url').textContent = location.origin + '/basecamp/index.json';
+  async function jget(u){try{const r=await fetch(u+'?_='+Date.now(),{cache:'no-store'});return await r.json();}catch(e){return null;}}
+  async function status(){
+    const [m,n,s]=await Promise.all([jget('/status/data.json'),jget('/status/node-data.json'),jget('/status/sys-data.json')]);
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v;};
+    if(n){const ok=n.state==='SYNCED';set('st-node','<span class="'+(ok?'on':'')+'">'+(n.state||'?')+'</span><span class="sub">'+(n.height!=null?'h'+n.height:'')+(n.peers!=null?' · '+n.peers+' peers':'')+'</span>');}
+    if(m&&m.health){const ac=(m.channels||[]).filter(c=>c.msgs).length;set('st-mesh',(m.health.nodes!=null?m.health.nodes+' nodes':'—')+'<span class="sub">'+(ac?ac+' active channel'+(ac>1?'s':''):'idle')+'</span>');}
+    if(s){set('st-sys','CPU '+(s.cpu!=null?Math.round(s.cpu):'–')+'% · '+(s.temp!=null?Math.round(s.temp)+'°C':'–')+'<span class="sub">MEM '+(s.mem?Math.round(s.mem.pct):'–')+'% · disk '+(s.disk?Math.round(s.disk.pct):'–')+'%</span>');
+      const g=s.gps||{};const fix={2:'2D fix',3:'3D fix'}[g.mode]||'no fix';set('st-gps',(g.lat!=null?g.lat.toFixed(4)+', '+g.lon.toFixed(4):'acquiring…')+'<span class="sub">GPS · '+fix+'</span>');}
+  }
+  status();setInterval(status,10000);
+  function cp(id,btn){
+    const t=document.getElementById(id).textContent;
+    const done=()=>{const o=btn.textContent;btn.textContent='Copied';setTimeout(()=>{btn.textContent=o;},1200);};
+    function fb(){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.top='-1000px';
+      document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done,fb);}else{fb();}
+  }
+</script>
+</body></html>

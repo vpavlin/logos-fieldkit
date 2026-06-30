@@ -1,0 +1,8 @@
+[Unit]
+Description=System+GPS dashboard feeder -> sys-data.json
+[Service]
+ExecStart=/usr/bin/python3 /home/vpavlin/mesh-dashboard/sys-feed.py
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=default.target

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "repositoryName": "basecamp-meshtastic",
+  "generatedAt": "2026-06-29T13:22:42Z",
+  "packages": [
+    {
+      "name": "mesh_gateway",
+      "versions": [
+        {
+          "releasedAt": "2026-06-29T13:22:42Z",
+          "publisherRef": "mesh_gateway-v0.3.5",
+          "url": "https://github.com/vpavlin/basecamp-meshtastic/releases/download/v0.3.5/logos-mesh_gateway-module-lib-linux-amd64.lgx",
+          "size": 6400026,
+          "sha256": "a6823c2ff40d4e73a24552e4ff0ec5751d8de1ee3b0f7806b4ced7857033f90f",
+          "rootHash": "4ab2bf16cf86c9d05fcbada7ace4d9c981608c69cf75971dbfd9ba9b291c22b9",
+          "manifest": {
+            "author": "",
+            "category": "network",
+            "dependencies": [],
+            "description": "Mesh gateway \u2014 bridge a connected LoRa mesh node (Meshtastic or MeshCore) to/from Logos Messaging",
+            "hashes": {
+              "root": "4ab2bf16cf86c9d05fcbada7ace4d9c981608c69cf75971dbfd9ba9b291c22b9",
+              "variants": "33cf6f230a2c9fd64d29fa9c21a36a563a28ff7a462ba087b9e84b602bf9ef3e",
+              "variants/linux-amd64": "378ed0d2587f702b6047198c86e469215cea3f69fc0b1bef69481b9cea695763"
+            },
+            "icon": "",
+            "main": {
+              "linux-amd64": "mesh_gateway_plugin.so"
+            },
+            "manifestVersion": "0.2.0",
+            "name": "mesh_gateway",
+            "type": "core",
+            "version": "0.3.5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mesh_gateway_ui",
+      "versions": [
+        {
+          "releasedAt": "2026-06-29T13:22:42Z",
+          "publisherRef": "mesh_gateway_ui-v0.3.5",
+          "url": "https://github.com/vpavlin/basecamp-meshtastic/releases/download/v0.3.5/logos-mesh_gateway_ui-module-linux-amd64.lgx",
+          "size": 34420,
+          "sha256": "671a8d64de66482beba985c3884bee79a368bdcdc89115b072da5f972518cedb",
+          "rootHash": "fc2230d6878d5e2eb8bea5a9b3d9c9b1483635962f2db66a36ef6021c847d14e",
+          "manifest": {
+            "author": "",
+            "category": "network",
+            "dependencies": [
+              "mesh_gateway"
+            ],
+            "description": "Mesh gateway UI \u2014 pick which of a connected node\u2019s channels to bridge to Logos Messaging",
+            "hashes": {
+              "root": "fc2230d6878d5e2eb8bea5a9b3d9c9b1483635962f2db66a36ef6021c847d14e",
+              "variants": "6c2f61540d25f1578f35a5a2d0afc7a9d114f828ff72a0ed17a7d730818c94bf",
+              "variants/linux-amd64": "48efa68a8e6d4c935fa4dc187baed8c3cca1cb50d867609c60500fb3d2e3e5f9"
+            },
+            "icon": "mesh.png",
+            "main": {},
+            "manifestVersion": "0.2.0",
+            "name": "mesh_gateway_ui",
+            "type": "ui_qml",
+            "version": "0.3.5",
+            "view": "Main.qml"
+          }
+        }
+      ]
+    },
+    {
+      "name": "qr",
+      "versions": [
+        {
+          "releasedAt": "2026-06-29T13:22:42Z",
+          "publisherRef": "qr-v0.2.0",
+          "url": "https://github.com/xAlisher/qr-basecamp/releases/download/v0.2.0/logos-qr-module-lib.lgx",
+          "size": 3787814,
+          "sha256": "9e6f1342f1dab2d2b52d82dea1d5e62ddab6dc65301d925e48e568543468d29f",
+          "rootHash": "8d64fa2fadb3bdc32cd90063e13e4c04c568ec89f61ecbaae2a63e0f422708ed",
+          "manifest": {
+            "author": "",
+            "category": "tools",
+            "dependencies": [],
+            "description": "QR code generator service \u2014 any module can request a QR matrix for arbitrary text",
+            "hashes": {
+              "root": "8d64fa2fadb3bdc32cd90063e13e4c04c568ec89f61ecbaae2a63e0f422708ed",
+              "variants": "3500acde77fa9a03bd673dc88d2613c2a27e5629df078c69676eca1db489800c",
+              "variants/linux-amd64": "d9f92a7cce0ef42f6d61e4e1ed4cc6b6e387eab79c393dbaba0ea47fc684837d"
+            },
+            "icon": "",
+            "main": {
+              "linux-amd64": "qr_plugin.so"
+            },
+            "manifestVersion": "0.2.0",
+            "name": "qr",
+            "type": "core",
+            "version": "0.2.0"
+          }
+        }
+      ]
+    }
+  ]
+}
