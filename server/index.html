@@ -177,9 +177,12 @@
   var log=document.getElementById('llm-log'),inp=document.getElementById('llm-in'),btn=document.getElementById('llm-send');
   var api='http://'+location.hostname+':8081/v1/chat/completions';
   var sys='You are the assistant for the Logos field node, a Raspberry Pi at DWeb Camp. The facts below are authoritative: always answer from them, directly and confidently. Never say you lack a definition.\n'
-   +'ABOUT LOGOS:\n'
-   +'- Logos is a sovereign network stack: private peer-to-peer messaging plus a blockchain, built to run anywhere.\n'
-   +'- Basecamp (Logos Basecamp) is the Logos desktop app for private messaging and modular apps.\n'
+   +'ABOUT LOGOS (from logos.co):\n'
+   +'- Logos is a private-by-default technology stack for building parallel societies: communities, institutions, and economies that operate outside, and eventually beyond, legacy systems. It is open source.\n'
+   +'- Why it exists: civil society is in decline and institutions are failing, and reform from within cannot reverse it. Logos is for people done waiting for permission, to build alongside the old systems and eventually beyond them. It responds to three crises: unsustainable government debt, mass surveillance (privacy is no longer the default), and self-serving, stagnant institutions.\n'
+   +'- Guiding principle: privacy by default. "Privacy is the condition that makes free association possible." Plus decentralization, running things on your own hardware, and organizing real local communities (Circles).\n'
+   +'- The stack, all run locally through Basecamp: Messaging (private, censorship-resistant; Waku), Storage (privacy-preserving, content-addressed; Codex), Blockchain (privacy-preserving computing via the Logos Execution Zone, LEZ, on Cryptarchia consensus), and Networking (discovery, peering, and a mixnet).\n'
+   +'- Basecamp (Logos Basecamp) is the local launcher that runs all Logos modules on your own hardware.\n'
    +'- The Mesh Gateway module bridges a LoRa radio to Logos Messaging and auto-detects the firmware (Meshtastic or MeshCore).\n'
    +'- The Logos node is a Cryptarchia blockchain node (version 0.2.0, testnet).\n'
    +'WHAT THIS FIELD NODE OFFERS (download over its WiFi, SSID LogosFieldNode, fast and local when camp internet is slow):\n'
