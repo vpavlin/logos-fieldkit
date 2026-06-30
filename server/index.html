@@ -176,21 +176,33 @@
 (function(){
   var log=document.getElementById('llm-log'),inp=document.getElementById('llm-in'),btn=document.getElementById('llm-send');
   var api='http://'+location.hostname+':8081/v1/chat/completions';
-  var sys='You are the assistant for a Logos field node, a Raspberry Pi at DWeb Camp. Answer concisely from these facts; if unsure, say so.\n'
-   +'- Logos is a sovereign network stack: private peer-to-peer messaging plus a blockchain, designed to run anywhere.\n'
-   +'- Logos Basecamp is the desktop app (private messaging and modular apps). To use it: download Basecamp from this node, open Settings then Package Repositories, add this node repository, then install the Mesh Gateway, its UI, and QR modules.\n'
-   +'- The Mesh Gateway bridges a LoRa radio to Logos Messaging and auto-detects the firmware (Meshtastic or MeshCore) when you plug it in.\n'
+  var sys='You are the assistant for the Logos field node, a Raspberry Pi at DWeb Camp. The facts below are authoritative: always answer from them, directly and confidently. Never say you lack a definition.\n'
+   +'ABOUT LOGOS:\n'
+   +'- Logos is a sovereign network stack: private peer-to-peer messaging plus a blockchain, built to run anywhere.\n'
+   +'- Basecamp (Logos Basecamp) is the Logos desktop app for private messaging and modular apps.\n'
+   +'- The Mesh Gateway module bridges a LoRa radio to Logos Messaging and auto-detects the firmware (Meshtastic or MeshCore).\n'
    +'- The Logos node is a Cryptarchia blockchain node (version 0.2.0, testnet).\n'
-   +'- This field node serves Basecamp, modules, node binaries, docs and a small library over its own WiFi (SSID LogosFieldNode) for fast local downloads when camp internet is slow.\n'
-   +'- You run fully locally on the Pi (model LFM2.5-230M); no data leaves the device. Keep answers short and friendly.';
-  var msgs=[{role:'system',content:sys}];
+   +'WHAT THIS FIELD NODE OFFERS (download over its WiFi, SSID LogosFieldNode, fast and local when camp internet is slow):\n'
+   +'- The Logos Basecamp app for Linux x86_64, Linux arm64, and macOS.\n'
+   +'- Mesh Gateway modules (Mesh Gateway, its UI, and QR), installed inside Basecamp via Settings, Package Repositories.\n'
+   +'- Logos blockchain node binaries (Linux x86_64 and arm64, macOS) plus proving circuits.\n'
+   +'- logoscore, the headless Logos Core CLI, plus the lgpm and lgpd tools.\n'
+   +'- A Guide on how to install, run, and test everything (read online or download).\n'
+   +'- A small library: "Holotropic Breathwork" by Stanislav and Christina Grof (EPUB and PDF), and "Farewell to Westphalia" by Jarrad Hope and Peter Ludlow (PDF).\n'
+   +'- This Local AI chat, running locally on the Pi.\n'
+   +'Answer in 1 to 3 short sentences.';
+  var msgs=[{role:'system',content:sys},
+   {role:'user',content:'What can I download here?'},
+   {role:'assistant',content:'Logos Basecamp (Linux and macOS), the Mesh Gateway modules, Logos blockchain node binaries, logoscore and its tools, a setup Guide, and a small library of books, all over the LogosFieldNode WiFi.'},
+   {role:'user',content:'What books do you have?'},
+   {role:'assistant',content:'Two: Holotropic Breathwork by Stanislav and Christina Grof, and Farewell to Westphalia by Jarrad Hope and Peter Ludlow, both in the Library section.'}];
   function bubble(role,text){var d=document.createElement('div');
     d.style.cssText='padding:9px 12px;border-radius:10px;max-width:88%;font-size:14px;white-space:pre-wrap;'+(role==='user'?'align-self:flex-end;background:#17171a;border:1px solid #33333a':'align-self:flex-start;background:var(--panel);border:1px solid var(--line)');
     d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight;return d;}
   async function send(){var q=inp.value.trim();if(!q)return;inp.value='';btn.disabled=true;
     bubble('user',q);msgs.push({role:'user',content:q});var out=bubble('assistant','…');
     try{var r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:msgs,max_tokens:256,temperature:0.6})});
+      body:JSON.stringify({messages:msgs,max_tokens:256,temperature:0.3})});
       var j=await r.json();var a=(j.choices[0].message.content||'').trim();
       out.textContent=a;msgs.push({role:'assistant',content:a});}
     catch(e){out.textContent='⚠ Local AI is offline right now.';msgs.pop();}
