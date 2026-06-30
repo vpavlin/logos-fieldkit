@@ -3,7 +3,7 @@ Description=DWeb Camp HTTP share
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 -m http.server 80 --directory /srv/dweb-share
+ExecStart=/usr/bin/python3 /home/vpavlin/captive-server.py
 Restart=always
 
 [Install]
