@@ -10,6 +10,10 @@ sudo apt-get update
 sudo apt-get install -y python3 dnsmasq-base qrencode nftables gpsd gpsd-clients \
   cage chromium grim || echo "  (some pkgs may be named differently on your image — e.g. chromium-browser)"
 
+echo "==> udev rules (stable /dev/heltec, /dev/gps — ttyACMx order isn't stable)"
+sudo cp "$REPO/install/99-logos-fieldkit.rules" /etc/udev/rules.d/
+sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=tty
+
 echo "==> Dashboard (LCD kiosk)"
 mkdir -p "$HOME/mesh-dashboard"
 cp "$REPO/dashboard/"*.py "$REPO/dashboard/index.html" "$HOME/mesh-dashboard/"

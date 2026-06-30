@@ -7,8 +7,15 @@
 - **Kiosk:** `cage` + `chromium` rendering `file://…/index.html`, `WLR_RENDERER=pixman`, on card2. Chromium needs `--allow-file-access-from-files` (a `file://` page can't `fetch()` local JSON otherwise).
 - **Screenshot:** `SOCK=$(sudo ls /run/kiosk | grep -E '^wayland-[0-9]+$' | head -1); sudo bash -c "XDG_RUNTIME_DIR=/run/kiosk WAYLAND_DISPLAY=$SOCK grim /tmp/x.png"`. A fresh kiosk restart shows pure black for a few seconds (chromium reloading) — re-grab after ~6 s.
 
+## Stable device names (udev)
+`/dev/ttyACMx` numbers are **not** stable across reboots/re-plugs — a GPS re-plug once swapped the Heltec and GPS, so the gateway opened the GPS (`Device or resource busy`) instead of the radio, and messages stopped flowing. `install/99-logos-fieldkit.rules` pins stable symlinks by USB vendor ID:
+- `/dev/heltec` → LoRa radio (Espressif VID `303a`)
+- `/dev/gps` → u-blox GPS (VID `1546`)
+
+Everything references these: the gateway runs with `MESHCORE_DEV=/dev/heltec`; the dashboard feeder's `radio_up()` fusers `/dev/heltec`. Apply rule changes with `sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=tty`.
+
 ## GPS — u-blox 7 (USB)
-- Enumerates as `/dev/ttyACM1` (the LoRa Heltec is `ttyACM0`); `gpsd` watches the `by-id` path. `sys-feed.py` reads it via `gpspipe`.
+- Available as `/dev/gps` (stable symlink — see above); `gpsd` watches its `by-id` path. `sys-feed.py` reads it via `gpspipe`.
 - This gpsd reports **HDOP** in `SKY` but **not a satellite list**, so the dashboard shows HDOP (lower = better) instead of a sat count.
 
 ## Hotspot — concurrent AP+STA on one brcmfmac radio

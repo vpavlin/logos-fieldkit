@@ -1,0 +1,6 @@
+# Stable names for the field-kit USB serial devices.
+# /dev/ttyACMx enumeration order is NOT stable across reboots/re-plugs — a GPS re-plug
+# once swapped the Heltec and GPS, so the gateway opened the GPS ("Device or resource busy")
+# instead of the radio. Pin stable symlinks by USB vendor ID instead.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", SYMLINK+="heltec"   # Heltec / Espressif LoRa radio
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", SYMLINK+="gps"      # u-blox GPS

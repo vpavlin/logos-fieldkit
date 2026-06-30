@@ -20,7 +20,7 @@ def active():
     try: return subprocess.run(["systemctl","--user","is-active","meshtastic-gateway"],capture_output=True,text=True).stdout.strip()=="active"
     except Exception: return False
 def radio_up():
-    try: return subprocess.run(["fuser","/dev/ttyACM0"],capture_output=True).returncode==0
+    try: return subprocess.run(["fuser","/dev/heltec"],capture_output=True).returncode==0
     except Exception: return False
 def node_name():
     m=re.search(r'name "([^"]+)"', jlast("SELF_INFO name"))
