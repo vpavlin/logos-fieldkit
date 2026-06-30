@@ -169,7 +169,7 @@
         style="flex:1;background:#000;border:1px solid var(--line);border-radius:9px;padding:11px 13px;color:var(--ink);font-size:14px;font-family:inherit">
       <button id="llm-send" class="copy" style="background:var(--accent2);color:#000;border-color:var(--accent2)">Send</button>
     </div>
-    <p class="note">Runs locally · LFM2.5-230M (8-bit) via llama.cpp · no data leaves the Pi</p>
+    <p class="note">Runs locally · Qwen3-1.7B (4-bit) via llama.cpp · no data leaves the Pi</p>
   </div>
 </section>
 <script>
@@ -203,7 +203,7 @@
     bubble('user',q);msgs.push({role:'user',content:q});var out=bubble('assistant','…');
     try{var r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({messages:msgs,max_tokens:256,temperature:0.3})});
-      var j=await r.json();var a=(j.choices[0].message.content||'').trim();
+      var j=await r.json();var a=(j.choices[0].message.content||'').replace(/<think>[\s\S]*?<\/think>/g,'').trim();
       out.textContent=a;msgs.push({role:'assistant',content:a});}
     catch(e){out.textContent='⚠ Local AI is offline right now.';msgs.pop();}
     btn.disabled=false;inp.focus();}

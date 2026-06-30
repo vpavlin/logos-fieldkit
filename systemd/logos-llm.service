@@ -3,7 +3,7 @@ Description=Local LLM (llama.cpp server, LFM2.5-230M) for the field node's "Loca
 After=network.target
 
 [Service]
-ExecStart=/home/vpavlin/llama.cpp/build/bin/llama-server -m /home/vpavlin/models/LFM2.5-230M-Q8_0.gguf --host 0.0.0.0 --port 8081 -c 2048 -t 3
+ExecStart=/home/vpavlin/llama.cpp/build/bin/llama-server -m /home/vpavlin/models/Qwen3-1.7B-Q4_K_M.gguf --host 0.0.0.0 --port 8081 -c 2048 -t 3 --reasoning off
 Restart=on-failure
 
 [Install]

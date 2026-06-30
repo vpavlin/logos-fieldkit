@@ -1,4 +1,9 @@
-# Local AI (llama.cpp + LFM2.5-230M)
+# Local AI (llama.cpp + Qwen3-1.7B)
+
+> Model: **Qwen3-1.7B** (Q4_K_M) — winner of a sub-3B bake-off on the Pi (most accurate at
+> grounding in the injected facts, ~8 tok/s). It's a reasoning model, so the service runs it
+> with `--reasoning off` for direct, snappy answers (otherwise it burns the token budget
+> "thinking"). Runner-up: Granite-4.0-h-1b. The 230M LFM2.5 hallucinated too much.
 
 A small language model running **entirely on the Pi**, served at `:8081` (OpenAI-compatible API),
 surfaced as the **Local AI** chat at the bottom of the landing page (`server/index.html`).
@@ -17,8 +22,8 @@ git clone --depth 1 https://github.com/ggml-org/llama.cpp ~/llama.cpp
 cmake -B ~/llama.cpp/build -S ~/llama.cpp -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=OFF
 cmake --build ~/llama.cpp/build -j3 --target llama-server
 mkdir -p ~/models
-wget -O ~/models/LFM2.5-230M-Q8_0.gguf \
-  https://huggingface.co/unsloth/LFM2.5-230M-GGUF/resolve/main/LFM2.5-230M-Q8_0.gguf
+wget -O ~/models/Qwen3-1.7B-Q4_K_M.gguf \
+  https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf
 ```
 
 ## Service
