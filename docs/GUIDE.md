@@ -54,7 +54,7 @@ Install the modules that bridge a LoRa mesh to Logos Messaging.
 
 ## 3. Logos blockchain node
 
-Run a Logos (Cryptarchia) node. **Proving circuits are bundled in the 0.2.0 binary** — no separate download.
+Run a Logos (Cryptarchia) node. **Use the standalone binary** — it's `testnet-0.2.0`, matching the bootstrap peers. (The Logos Core *module* path via `lgpd download blockchain_module` is a **devnet** build and won't chainsync on the testnet — see [issue #3054](https://github.com/logos-blockchain/logos-blockchain/issues/3054).)
 
 **Download** (landing page → *Logos Node*) the tarball for your platform and extract:
 ```bash
@@ -72,9 +72,15 @@ $ ./logos-blockchain-node init-config -o user_config.yaml \
 ```
 (This also writes `keystore.yaml`. To carry over a 0.1.2 node use `migrate-from-0.1.2` instead.)
 
-**Run:**
+**Proving circuits** — the 0.2.0 release ships none, so reuse **v0.4.2** (download from *Logos Node*; the `.zkey` keys are arch-agnostic, same tarball for x86_64/arm64):
 ```bash
-$ ./logos-blockchain-node --log-backend stderr user_config.yaml
+$ mkdir -p ~/.logos-blockchain-circuits
+$ tar xzf logos-blockchain-circuits-v0.4.2-linux-aarch64.tar.gz -C ~/.logos-blockchain-circuits
+```
+
+**Run** (point at the circuits):
+```bash
+$ LOGOS_BLOCKCHAIN_CIRCUITS=~/.logos-blockchain-circuits ./logos-blockchain-node --log-backend stderr user_config.yaml
 ```
 
 **Verify** (in another terminal):

@@ -126,13 +126,14 @@
   <p class="lead">Run a Logos blockchain (Cryptarchia) node.</p>
   <div class="card">
     <h3>Logos blockchain node</h3>
-    <p class="by">v0.2.0 · Linux (x86_64 · arm64) + macOS · proving circuits bundled</p>
+    <p class="by">v0.2.0 · Linux (x86_64 · arm64) + macOS · testnet</p>
     <div class="files">
       <a class="btn" href="/node/logos-blockchain-node-linux-x86_64-0.2.0.tar.gz" download>Linux x86_64 <span class="sz">43 MB</span></a>
       <a class="btn" href="/node/logos-blockchain-node-linux-aarch64-0.2.0.tar.gz" download>Linux arm64 <span class="sz">42 MB</span></a>
       <a class="btn" href="/node/logos-blockchain-node-macos-aarch64-0.2.0.tar.gz" download>macOS arm64 <span class="sz">41 MB</span></a>
+      <a class="btn" href="/node/logos-blockchain-circuits-v0.4.2-linux-aarch64.tar.gz" download>proving circuits v0.4.2 <span class="sz">31 MB</span></a>
     </div>
-    <p class="note">Config is generated per-node via <span class="mono">generate_user_config</span> with the devnet bootstrap peers — see the quick-start. <a class="ext" href="https://github.com/logos-blockchain/logos-blockchain/releases/tag/0.2.0" target="_blank" rel="noopener">release 0.2.0 ↗</a></p>
+    <p class="note">Use the <b>standalone</b> binary for testnet (the lgpd module path is devnet-only). Generate config with <span class="mono">init-config -p &lt;peers&gt;</span>; extract the circuits and set <span class="mono">LOGOS_BLOCKCHAIN_CIRCUITS</span>. Full steps in the <a class="ext" href="/docs.html">Guide</a>.</p>
   </div>
 </section>
 
