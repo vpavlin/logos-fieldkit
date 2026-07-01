@@ -226,7 +226,7 @@
   async function status(){
     const [m,n,s]=await Promise.all([jget('/status/data.json'),jget('/status/node-data.json'),jget('/status/sys-data.json')]);
     const set=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v;};
-    if(n){const ok=n.state==='SYNCED';set('st-node','<span class="'+(ok?'on':'')+'">'+(n.state||'?')+'</span><span class="sub">'+(n.height!=null?'h'+n.height:'')+(n.peers!=null?' · '+n.peers+' peers':'')+'</span>');}
+    if(n){const ok=n.state==='ONLINE';set('st-node','<span class="'+(ok?'on':'')+'">'+(n.state||'?')+'</span><span class="sub">'+(n.height!=null?'h'+n.height:'')+(n.peers!=null?' · '+n.peers+' peers':'')+'</span>');}
     if(m&&m.health){const ac=(m.channels||[]).filter(c=>c.msgs).length;set('st-mesh',(m.health.nodes!=null?m.health.nodes+' nodes':'—')+'<span class="sub">'+(ac?ac+' active channel'+(ac>1?'s':''):'idle')+'</span>');}
     if(s){set('st-sys','CPU '+(s.cpu!=null?Math.round(s.cpu):'–')+'% · '+(s.temp!=null?Math.round(s.temp)+'°C':'–')+'<span class="sub">MEM '+(s.mem?Math.round(s.mem.pct):'–')+'% · disk '+(s.disk?Math.round(s.disk.pct):'–')+'%</span>');
       const g=s.gps||{};const fix={2:'2D fix',3:'3D fix'}[g.mode]||'no fix';set('st-gps',(g.lat!=null?g.lat.toFixed(4)+', '+g.lon.toFixed(4):'acquiring…')+'<span class="sub">GPS · '+fix+'</span>');}

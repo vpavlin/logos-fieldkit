@@ -133,7 +133,7 @@
  }catch(e){}}
  async function pollNode(){try{
    const r=await fetch("node-data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json();
-   const st=$("nstate"); st.textContent=d.state||"?"; st.className="badge "+({SYNCED:"ok",SYNCING:"warn",WEDGED:"bad",DOWN:""}[d.state]||"");
+   const st=$("nstate"); st.textContent=d.state||"?"; st.className="badge "+({ONLINE:"ok",SYNCING:"warn",WEDGED:"bad",DOWN:""}[d.state]||"");
    $("nheight").textContent=d.height!=null?d.height:"—"; $("npeers").textContent=d.peers!=null?d.peers:"—";
    $("nconn").textContent=d.connections!=null?d.connections:"—"; $("nrestarts").textContent=d.restarts!=null?d.restarts:0;
    $("npeerid").textContent=d.peerId||"—";

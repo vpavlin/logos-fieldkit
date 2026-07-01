@@ -31,7 +31,7 @@ def build():
        "peers":net.get("n_peers"),"connections":net.get("n_connections"),"pending":net.get("n_pending_connections"),
        "peerId":pid,"peerShort":(pid[:6]+"…"+pid[-6:]) if len(pid)>14 else pid,
        "restarts":wd_restarts(),"active":act,"mode":mode}
-    d["state"]=("DOWN" if not act else ("SYNCING" if mode=="Bootstrapping" else "SYNCED") if height is not None else "SYNCING" if net else "WEDGED")
+    d["state"]=("DOWN" if not act else ("SYNCING" if mode=="Bootstrapping" else "ONLINE") if height is not None else "SYNCING" if net else "WEDGED")
     tmp=OUT+".tmp"; open(tmp,"w").write(json.dumps(d)); os.replace(tmp,OUT)
 if __name__=="__main__":
     if "once" in sys.argv: build()
