@@ -51,13 +51,16 @@ def build():
     bal,notes=wallet()
     try: prev=json.load(open(OUT))
     except Exception: prev={}
-    chgTs=prev.get("balanceChangeTs"); delta=prev.get("balanceDelta")
-    if bal is not None and isinstance(prev.get("balance"),int) and bal!=prev["balance"]:
-        chgTs=int(time.time()); delta=bal-prev["balance"]
+    chgTs=prev.get("balanceChangeTs"); delta=prev.get("balanceDelta"); bmax=prev.get("balanceMax")
+    if bal is not None:
+        if not isinstance(bmax,int):
+            bmax=bal; chgTs=None; delta=None            # seed high-water mark; ignore restart/resync dips
+        elif bal>bmax:
+            chgTs=int(time.time()); delta=bal-bmax; bmax=bal   # genuine new note(s): a reward (or faucet)
     d={"updated":int(time.time()),"height":height,"slot":ci.get("slot"),"libSlot":ci.get("lib_slot"),
        "peers":net.get("n_peers"),"connections":net.get("n_connections"),"pending":net.get("n_pending_connections"),
        "peerId":pid,"peerShort":(pid[:6]+"…"+pid[-6:]) if len(pid)>14 else pid,
-       "balance":bal,"notes":notes,"balanceChangeTs":chgTs,"balanceDelta":delta,"uptime":uptime(),
+       "balance":bal,"notes":notes,"balanceChangeTs":chgTs,"balanceDelta":delta,"balanceMax":bmax,"uptime":uptime(),
        "restarts":wd_restarts(),"active":act,"mode":mode}
     d["state"]=("DOWN" if not act else ("SYNCING" if mode=="Bootstrapping" else "ONLINE") if height is not None else "SYNCING" if net else "WEDGED")
     tmp=OUT+".tmp"; open(tmp,"w").write(json.dumps(d)); os.replace(tmp,OUT)
