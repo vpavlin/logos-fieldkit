@@ -20,10 +20,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*a, directory=ROOT, **k)
 
     def _is_real(self):
+        # Serve anything that exists on disk: a file, or a directory (dirs
+        # without index.html get the stdlib autoindex listing so /basecamp/modules/,
+        # /node/, /library/ … are browsable). Only genuinely-unknown paths — the OS
+        # captive probes and typos — fall through to the portal redirect.
         fs = self.translate_path(self.path.split("?", 1)[0])
-        return os.path.isfile(fs) or (
-            os.path.isdir(fs) and os.path.isfile(os.path.join(fs, "index.html"))
-        )
+        return os.path.exists(fs)
 
     def _portal(self):
         self.send_response(302)
