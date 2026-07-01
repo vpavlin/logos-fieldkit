@@ -76,6 +76,7 @@
     <div class="chip"><div class="k">Restarts</div><div class="v" id="nrestarts">0</div></div>
   </div>
   <div class="hd">FINALITY</div><div class="mono" id="nnote">—</div>
+  <div class="hd">BLOCK PRODUCTION</div><div class="mono" id="nleader">—</div>
   <div class="hd">PEER ID</div><div class="mono" id="npeerid">—</div>
  </div>
  <div id="sysView" style="display:none">
@@ -144,6 +145,9 @@
    $("nup").textContent=d.uptime==null?"—":d.uptime>=86400?Math.floor(d.uptime/86400)+"d "+Math.floor(d.uptime%86400/3600)+"h":d.uptime>=3600?Math.floor(d.uptime/3600)+"h "+Math.floor(d.uptime%3600/60)+"m":Math.floor(d.uptime/60)+"m";
    $("npeerid").textContent=d.peerId||"—";
    $("nnote").textContent=(d.slot!=null&&d.libSlot!=null)?("final @ slot "+d.libSlot+" · tip @ "+d.slot):(d.height!=null?"following the chain":"node API unreachable");
+   var _a=d.balanceChangeTs?Math.max(0,Math.floor(Date.now()/1000-d.balanceChangeTs)):null;
+   var _as=_a==null?"":(_a>=86400?Math.floor(_a/86400)+"d":_a>=3600?Math.floor(_a/3600)+"h":_a>=60?Math.floor(_a/60)+"m":_a+"s");
+   $("nleader").textContent=(d.notes!=null?d.notes+" notes":"—")+(d.balanceDelta!=null&&d.balanceChangeTs?" · last "+(d.balanceDelta>0?"+":"")+d.balanceDelta+" "+_as+" ago":"");
  }catch(e){}}
  async function pollSys(){try{
    const r=await fetch("sys-data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json();

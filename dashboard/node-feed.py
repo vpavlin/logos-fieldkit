@@ -24,12 +24,14 @@ def cfg_keys():
         try: CFG_KEYS=re.findall(r"^\s+([0-9a-f]{64}):\s*[0-9a-f]{64}\s*$", open(os.path.expanduser("~/user_config.yaml")).read(), re.M)
         except Exception: CFG_KEYS=[]
     return CFG_KEYS
-def balance():
-    tot=0; seen=False
+def wallet():
+    # (total balance, note count) summed over the usable keys
+    tot=0; notes=0; seen=False
     for k in cfg_keys():
         b=jget("/wallet/%s/balance"%k,6)
-        if isinstance(b,dict) and isinstance(b.get("balance"),int): tot+=b["balance"]; seen=True
-    return tot if seen else None
+        if isinstance(b,dict) and isinstance(b.get("balance"),int):
+            tot+=b["balance"]; notes+=len(b.get("notes") or {}); seen=True
+    return (tot,notes) if seen else (None,None)
 def uptime():
     try:
         mono=float(subprocess.run(["systemctl","--user","show","logos-node","-p","ActiveEnterTimestampMonotonic","--value"],capture_output=True,text=True).stdout.strip())/1e6
@@ -46,10 +48,16 @@ def build():
     mode=mode if isinstance(mode,str) else None
     net=net if isinstance(net,dict) else {}
     act=active(); pid=net.get("peer_id") or ""
+    bal,notes=wallet()
+    try: prev=json.load(open(OUT))
+    except Exception: prev={}
+    chgTs=prev.get("balanceChangeTs"); delta=prev.get("balanceDelta")
+    if bal is not None and isinstance(prev.get("balance"),int) and bal!=prev["balance"]:
+        chgTs=int(time.time()); delta=bal-prev["balance"]
     d={"updated":int(time.time()),"height":height,"slot":ci.get("slot"),"libSlot":ci.get("lib_slot"),
        "peers":net.get("n_peers"),"connections":net.get("n_connections"),"pending":net.get("n_pending_connections"),
        "peerId":pid,"peerShort":(pid[:6]+"…"+pid[-6:]) if len(pid)>14 else pid,
-       "balance":balance(),"uptime":uptime(),
+       "balance":bal,"notes":notes,"balanceChangeTs":chgTs,"balanceDelta":delta,"uptime":uptime(),
        "restarts":wd_restarts(),"active":act,"mode":mode}
     d["state"]=("DOWN" if not act else ("SYNCING" if mode=="Bootstrapping" else "ONLINE") if height is not None else "SYNCING" if net else "WEDGED")
     tmp=OUT+".tmp"; open(tmp,"w").write(json.dumps(d)); os.replace(tmp,OUT)
