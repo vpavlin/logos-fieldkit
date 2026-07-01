@@ -1,5 +1,5 @@
 [Unit]
-Description=Local LLM (llama.cpp server, LFM2.5-230M) for the field node's "Local AI" chat
+Description=Local LLM (llama.cpp server, Qwen3-1.7B) for the field node's "Local AI" chat
 After=network.target
 
 [Service]

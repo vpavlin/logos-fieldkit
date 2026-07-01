@@ -53,4 +53,6 @@ cat <<'EOF'
     (single brcmfmac radio = AP+STA must share a channel — `nmcli dev wifi | grep '\*'`).
   * Bring the hotspot up safely:  sudo ~/ap-up.sh   (see docs/hardware.md for the auto-revert pattern)
   * Verify:  http://<ip>/   and the LCD panel's tabs.
+  * Optional Local AI chat (bottom of the landing page): see server/llm-setup.md
+    — builds llama.cpp, pulls Qwen3-1.7B (~1 GB), installs the logos-llm user service on :8081.
 EOF

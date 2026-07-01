@@ -14,6 +14,7 @@ Built for **DWeb Camp**: it runs with no upstream internet, over its own WiFi ac
 | **Blockchain node** | A Logos (Cryptarchia) node — see [logos-blockchain](https://github.com/logos-blockchain/logos-blockchain). |
 | **LCD dashboard** | A 3.5" SPI touch panel with **MESH · NODE · SYS · GPS · WIFI** tabs (live mesh activity, node sync, CPU/mem/disk/temp, GPS + cached offline map, and the join-QR). |
 | **Download hotspot** | A WiFi AP (`LogosFieldNode`) + HTTP server offering Basecamp (Linux/macOS), `.lgx` modules + an in-app package repo, the node binary + circuits, docs, and an offline library. |
+| **Local AI** | A small LLM (Qwen3-1.7B via llama.cpp) running **entirely on the Pi** — a Logos-aware chat at the bottom of the landing page, genuinely offline. Knowledge is injected via the system prompt in `server/index.html`; setup in [`server/llm-setup.md`](server/llm-setup.md). |
 
 ## Architecture
 
@@ -28,6 +29,7 @@ Built for **DWeb Camp**: it runs with no upstream internet, over its own WiFi ac
   LCD kiosk (cage + chromium, file://)  ── dashboard/index.html  (5 touch tabs)
 
   HTTP server (dweb-http.service, :80)  ── /srv/dweb-share  (server/index.html landing + artifacts)
+  Local LLM (logos-llm.service, :8081)  ── Qwen3-1.7B via llama.cpp, on-Pi chat in the landing page
         ▲
   WiFi AP "LogosFieldNode"  ── concurrent AP+STA on wlan0_ap (keeps the uplink) ── hotspot/ap-up.sh
 ```
@@ -45,9 +47,9 @@ The dashboard reuses the *same* feeder JSON via symlinks, so the landing page sh
 
 ```
 dashboard/   LCD kiosk: index.html + feeders (feed.py / node-feed.py / sys-feed.py) + mesh-kiosk.sh
-server/      HTTP landing page (index.html) served from /srv/dweb-share
+server/      HTTP landing page (index.html, incl. the on-Pi Local AI chat + its system prompt) + llm-setup.md
 hotspot/     ap-up.sh / ap-revert.sh — concurrent AP+STA + the timed auto-revert safety pattern
-systemd/     the .service units (3 feeders, dweb-http, mesh-kiosk)
+systemd/     the .service units (3 feeders, dweb-http, mesh-kiosk, logos-llm)
 modules/     the module catalog (index.json) + CONTRIBUTING.md
 install/      install.sh — bring the kit up on a fresh Pi
 docs/         hardware notes, panel quirks, recovery runbook
