@@ -65,14 +65,18 @@
  </div>
  <div id="nodeView" style="display:none">
   <div class="hrow"><span>Logos Node</span><span class="badge" id="nstate">…</span></div>
-  <div class="hstat"><span>WATCHDOG RESTARTS: <span id="nrestarts">0</span></span></div>
   <div class="stat3">
     <div class="chip"><div class="k">Height</div><div class="v" id="nheight">—</div></div>
     <div class="chip"><div class="k">Peers</div><div class="v" id="npeers">—</div></div>
     <div class="chip"><div class="k">Conn</div><div class="v" id="nconn">—</div></div>
   </div>
+  <div class="stat3">
+    <div class="chip"><div class="k">Balance</div><div class="v" id="nbal">—</div></div>
+    <div class="chip"><div class="k">Uptime</div><div class="v" id="nup">—</div></div>
+    <div class="chip"><div class="k">Restarts</div><div class="v" id="nrestarts">0</div></div>
+  </div>
+  <div class="hd">FINALITY</div><div class="mono" id="nnote">—</div>
   <div class="hd">PEER ID</div><div class="mono" id="npeerid">—</div>
-  <div class="hd">CONSENSUS</div><div class="mono" id="nnote">—</div>
  </div>
  <div id="sysView" style="display:none">
   <div class="hrow"><span>System</span><span class="badge ok" id="suptime">—</span></div>
@@ -136,8 +140,10 @@
    const st=$("nstate"); st.textContent=d.state||"?"; st.className="badge "+({ONLINE:"ok",SYNCING:"warn",WEDGED:"bad",DOWN:""}[d.state]||"");
    $("nheight").textContent=d.height!=null?d.height:"—"; $("npeers").textContent=d.peers!=null?d.peers:"—";
    $("nconn").textContent=d.connections!=null?d.connections:"—"; $("nrestarts").textContent=d.restarts!=null?d.restarts:0;
+   $("nbal").textContent=d.balance!=null?d.balance:"—";
+   $("nup").textContent=d.uptime==null?"—":d.uptime>=86400?Math.floor(d.uptime/86400)+"d "+Math.floor(d.uptime%86400/3600)+"h":d.uptime>=3600?Math.floor(d.uptime/3600)+"h "+Math.floor(d.uptime%3600/60)+"m":Math.floor(d.uptime/60)+"m";
    $("npeerid").textContent=d.peerId||"—";
-   $("nnote").textContent=d.height!=null?("synced at height "+d.height):(d.peers!=null?"networking up ("+d.peers+" peers) — consensus catching up / wedged":"node API unreachable");
+   $("nnote").textContent=(d.slot!=null&&d.libSlot!=null)?("final @ slot "+d.libSlot+" · tip @ "+d.slot):(d.height!=null?"following the chain":"node API unreachable");
  }catch(e){}}
  async function pollSys(){try{
    const r=await fetch("sys-data.json?_="+Date.now(),{cache:"no-store"}); const d=await r.json();
