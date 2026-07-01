@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logos Basecamp — Module Repository</title>
+<style>
+ :root{ --bg:#0a0a0b; --panel:#101012; --ink:#f2f2f3; --muted:#8a8a90; --line:#222226; --accent:#e7e7ea; --accent2:#9a8cff; --ok:#46c46a; }
+ *{box-sizing:border-box}
+ html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+ .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+ .wrap{max-width:760px;margin:0 auto;padding:0 20px 64px}
+ header{padding:40px 0 24px;border-bottom:1px solid var(--line);margin-bottom:8px}
+ h1{font-size:23px;letter-spacing:.5px;margin:6px 0 6px}
+ .tag{color:var(--muted);margin:0;font-size:15px}
+ a.back{color:var(--accent2);text-decoration:none;font-size:13px}
+ a.back:hover{text-decoration:underline}
+ section{padding:24px 0 8px;border-bottom:1px solid var(--line)}
+ section:last-of-type{border-bottom:0}
+ .lead{color:var(--muted);margin:6px 0 14px;font-size:15px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+ .card h3{margin:0 0 3px;font-size:18px;font-weight:650}
+ .card .by{color:var(--muted);font-size:13px;margin:0 0 10px}
+ .card .desc{color:var(--ink);font-size:14px;margin:0 0 12px}
+ .files{display:flex;flex-wrap:wrap;gap:10px}
+ a.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid #33333a;color:var(--ink);background:#17171a;padding:9px 14px;border-radius:9px;font-size:14px;font-weight:600;transition:.15s}
+ a.btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+ a.btn .sz{color:var(--muted);font-weight:500;font-size:12px}
+ a.btn:hover .sz{color:#333}
+ .meta{color:var(--muted);font-size:12px;margin-top:10px;word-break:break-all}
+ ol{color:var(--muted);font-size:14px;padding-left:20px;margin:8px 0}
+ ol li{margin:4px 0}
+ .urlbox{display:flex;gap:8px;align-items:center;margin:12px 0 0;flex-wrap:wrap}
+ .urlbox code{background:#000;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px;color:var(--ink);flex:1;min-width:240px;overflow-x:auto;white-space:nowrap}
+ button.copy{border:1px solid #33333a;background:#17171a;color:var(--ink);border-radius:8px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer}
+ button.copy:active{background:var(--accent);color:#000}
+ .note{color:var(--muted);font-size:13px;margin-top:10px}
+ footer{padding:26px 0 0;color:var(--muted);font-size:13px;text-align:center}
+</style></head>
+<body><div class="wrap">
+
+<header>
+  <a class="back" href="/">← field node home</a>
+  <h1>Logos Basecamp — Module Repository</h1>
+  <p class="tag" id="reponame">loading catalog…</p>
+</header>
+
+<section>
+  <p class="lead">The clean way — install these <b>inside Basecamp</b>, no manual download:</p>
+  <ol>
+    <li>Open <b>Logos Basecamp → Settings → Package Repositories</b>.</li>
+    <li>Add this repository URL:</li>
+  </ol>
+  <div class="urlbox"><code id="repo-url" class="mono">…</code><button class="copy" onclick="cp('repo-url',this)">Copy</button></div>
+  <p class="note">Then install from the in-app list. Modules install on <b>Linux x86_64</b>; the raw <span class="mono">.lgx</span> below (incl. arm64) are for manual / advanced use.</p>
+</section>
+
+<section>
+  <p class="lead">Modules in this repository:</p>
+  <div id="mods"></div>
+</section>
+
+<footer>Logos field node · offline module repository · everything here downloads locally</footer>
+</div>
+
+<script>
+function cp(id,btn){var t=document.getElementById(id).textContent;
+  function ok(){var o=btn.textContent;btn.textContent='Copied';setTimeout(function(){btn.textContent=o;},1200);}
+  if(navigator.clipboard&&location.protocol==='https:'){navigator.clipboard.writeText(t).then(ok);}
+  else{var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(ta);}}
+function fmtSize(b){if(b==null)return'';if(b>=1048576)return(b/1048576).toFixed(1)+' MB';if(b>=1024)return(b/1024).toFixed(0)+' KB';return b+' B';}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+document.getElementById('repo-url').textContent = location.origin + '/basecamp/index.json';
+
+fetch('../index.json').then(function(r){return r.json();}).then(function(d){
+  var pkgs = d.packages || [];
+  document.getElementById('reponame').textContent = (d.repositoryName||'modules') + ' · ' + pkgs.length + ' module' + (pkgs.length===1?'':'s');
+  var html = pkgs.map(function(p){
+    var v = (p.versions||[])[0] || {}; var m = v.manifest || {};
+    var file = (v.url||'').split('/').pop();
+    var btns = '';
+    if(file){
+      if(file.indexOf('-amd64') >= 0){
+        btns = '<a class="btn" href="./'+esc(file)+'" download>Linux x86_64 <span class="sz">'+fmtSize(v.size)+'</span></a>'
+             + '<a class="btn" href="./'+esc(file.replace('-amd64','-arm64'))+'" download>Linux arm64</a>';
+      } else {
+        btns = '<a class="btn" href="./'+esc(file)+'" download>Download <span class="sz">.lgx · '+fmtSize(v.size)+'</span></a>';
+      }
+    }
+    return '<div class="card"><h3>'+esc(m.name||p.name)+'</h3>'
+      + '<p class="by">v'+esc(m.version||'?')+(m.category?' · '+esc(m.category):'')+(m.type?' · '+esc(m.type):'')+'</p>'
+      + '<p class="desc">'+esc(m.description||'')+'</p>'
+      + '<div class="files">'+btns+'</div>'
+      + (v.sha256?'<p class="meta mono">sha256 '+esc(v.sha256.slice(0,24))+'…</p>':'')
+      + '</div>';
+  }).join('');
+  document.getElementById('mods').innerHTML = html || '<p class="lead">No modules in the catalog yet.</p>';
+}).catch(function(e){
+  document.getElementById('reponame').textContent = 'catalog unavailable';
+  document.getElementById('mods').innerHTML = '<p class="lead">Could not load the catalog (index.json). The module <span class="mono">.lgx</span> files are still present in this directory — try adding the repository URL above in Basecamp instead.</p>';
+});
+</script>
+</body></html>

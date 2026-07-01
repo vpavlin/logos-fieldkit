@@ -27,6 +27,7 @@ cp "$REPO/server/index.html" /srv/dweb-share/index.html
 for j in data node-data sys-data; do ln -sf "$HOME/mesh-dashboard/$j.json" "/srv/dweb-share/status/$j.json"; done
 # The module repo (rewrite catalog URLs -> this node's hotspot IP):
 python3 "$REPO/modules/gen-local-repo.py" "$REPO/modules/index.json" > /srv/dweb-share/basecamp/index.json
+cp "$REPO/server/modules-index.html" /srv/dweb-share/basecamp/modules/index.html   # styled, browsable module page
 
 echo "==> Hotspot scripts"
 cp "$REPO/hotspot/ap-up.sh" "$REPO/hotspot/ap-revert.sh" "$HOME/"
