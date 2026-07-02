@@ -67,6 +67,13 @@ def main():
         p["versions"] = [v]
         kept.append(p)
 
+    # prune stale .lgx from older runs / version bumps (keep only what the index references)
+    keep = {p["versions"][0]["url"].split("/")[-1] for p in kept}
+    for f in os.listdir(OUT_DIR):
+        if f.endswith(".lgx") and f not in keep:
+            print("  - pruning stale", f)
+            os.remove(os.path.join(OUT_DIR, f))
+
     idx["packages"] = kept
     idx["repositoryName"] = "logos-modules-official (field-node mirror)"
     with open(os.path.join(OUT_DIR, "index.json"), "w") as f:
