@@ -28,6 +28,9 @@ for j in data node-data sys-data; do ln -sf "$HOME/mesh-dashboard/$j.json" "/srv
 # The module repo (rewrite catalog URLs -> this node's hotspot IP):
 python3 "$REPO/modules/gen-local-repo.py" "$REPO/modules/index.json" > /srv/dweb-share/basecamp/index.json
 cp "$REPO/server/modules-index.html" /srv/dweb-share/basecamp/modules/index.html   # styled, browsable module page
+# Mirror the 0.2.0-compatible official modules (delivery_module etc.) as a 2nd repo (needs internet):
+python3 "$REPO/server/mirror-official.py" /srv/dweb-share/basecamp/official "http://10.42.0.1/basecamp/official" \
+  || echo "  (mirror-official skipped — no internet now? re-run server/mirror-official.py later)"
 
 echo "==> Hotspot scripts"
 cp "$REPO/hotspot/ap-up.sh" "$REPO/hotspot/ap-revert.sh" "$HOME/"

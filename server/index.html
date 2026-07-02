@@ -100,9 +100,11 @@
       <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-linux-aarch64.AppImage" download>Linux arm64 <span class="sz">256 MB</span></a>
       <a class="btn" href="/basecamp/LogosBasecamp-0.2.0-macos-arm64.dmg" download>macOS arm64 <span class="sz">94 MB</span></a>
     </div>
-    <p class="note">Then add the on-node module repository in <b>Basecamp → Settings → Package Repositories</b> to install the Mesh Gateway + UI + QR modules:</p>
+    <p class="note">Then add these on-node repositories in <b>Basecamp → Settings → Package Repositories</b>. First, our mesh modules (Gateway + UI + QR):</p>
     <div class="urlbox"><code id="repo-url" class="mono">…</code><button class="copy" onclick="cp('repo-url',this)">Copy</button></div>
-    <p class="note">Modules install on <b>Linux x86_64</b> via the repo above. macOS gets the app only (mesh modules are Linux-only for now); raw arm64 <span class="mono">.lgx</span> live in <a class="ext" href="/basecamp/modules/">/basecamp/modules/</a>.</p>
+    <p class="note">And the <b>official Logos modules</b>, mirrored on-node — Messaging (<span class="mono">delivery_module</span>, <b>required by the gateway</b>) plus Storage &amp; more, for offline install:</p>
+    <div class="urlbox"><code id="repo-url-official" class="mono">…</code><button class="copy" onclick="cp('repo-url-official',this)">Copy</button></div>
+    <p class="note">Modules install on <b>Linux x86_64</b> via the repos above. macOS gets the app only (mesh modules are Linux-only for now); raw <span class="mono">.lgx</span> live in <a class="ext" href="/basecamp/modules/">/basecamp/modules/</a> and <a class="ext" href="/basecamp/official/">/basecamp/official/</a>.</p>
   </div>
 </section>
 
@@ -222,6 +224,7 @@
 <script>
   document.getElementById('host').textContent = location.host;
   document.getElementById('repo-url').textContent = location.origin + '/basecamp/index.json';
+  document.getElementById('repo-url-official').textContent = location.origin + '/basecamp/official/logos-repo-official.json';
   async function jget(u){try{const r=await fetch(u+'?_='+Date.now(),{cache:'no-store'});return await r.json();}catch(e){return null;}}
   async function status(){
     const [m,n,s]=await Promise.all([jget('/status/data.json'),jget('/status/node-data.json'),jget('/status/sys-data.json')]);

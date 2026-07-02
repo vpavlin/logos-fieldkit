@@ -13,7 +13,7 @@ Built for **DWeb Camp**: it runs with no upstream internet, over its own WiFi ac
 | **Mesh gateway** | Bridges a LoRa mesh (Meshtastic *or* MeshCore) ⇄ Logos Messaging. Lives in [basecamp-meshtastic](https://github.com/vpavlin/basecamp-meshtastic); cataloged here. |
 | **Blockchain node** | A Logos (Cryptarchia) node — see [logos-blockchain](https://github.com/logos-blockchain/logos-blockchain). |
 | **LCD dashboard** | A 3.5" SPI touch panel with **MESH · NODE · SYS · GPS · WIFI** tabs (live mesh activity, node sync, CPU/mem/disk/temp, GPS + cached offline map, and the join-QR). |
-| **Download hotspot** | A WiFi AP (`LogosFieldNode`) + HTTP server offering Basecamp (Linux/macOS), `.lgx` modules + an in-app package repo, the node binary + circuits, docs, and an offline library. |
+| **Download hotspot** | A WiFi AP (`LogosFieldNode`) + HTTP server offering Basecamp (Linux/macOS), **two in-app package repos** (our mesh modules + an on-node mirror of the 0.2.0-compatible official Logos modules, incl. `delivery_module`), the node binary + circuits, docs, and an offline library. |
 | **Local AI** | A small LLM (Qwen3-1.7B via llama.cpp) running **entirely on the Pi** — a Logos-aware chat at the bottom of the landing page, genuinely offline. Knowledge is injected via the system prompt in `server/index.html`; setup in [`server/llm-setup.md`](server/llm-setup.md). |
 
 ## Architecture
